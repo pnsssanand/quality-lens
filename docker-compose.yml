@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: qualitylens-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: qualitylens
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: qualitylens-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/qualitylens
+      - ENVIRONMENT=production
+      - DEBUG=False
+      - FIREBASE_PROJECT_ID=quality-lens-c174e
+      - CLOUDINARY_CLOUD_NAME=dlvjvskje
+      - CLOUDINARY_UPLOAD_PRESET=Quality lens
+      - THRESHOLD_NORMAL_MAX=2.0
+      - THRESHOLD_WARNING_MAX=5.0
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: qualitylens-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

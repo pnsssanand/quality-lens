@@ -1,0 +1,7 @@
+inspection_id,inspection_date,product_id,product_name,production_line,machine_id,shift,units_inspected,defective_units,defect_category,defect_description,severity,inspection_status
+INSP-TEST-001,2026-06-01,PRD-A100,Precision Hub,Line Alpha,MCH-01,Shift 1,500,800,Surface Scratch,Defective units exceed inspected,Low,FAILED
+INSP-TEST-002,INVALID_DATE_FORMAT,PRD-A100,Precision Hub,Line Alpha,MCH-01,Shift 1,500,5,Surface Scratch,Corrupted date format,Low,FAILED
+INSP-TEST-003,2026-06-02,PRD-B200,Industrial Transceiver,Line Beta,MCH-03,Shift 2,-50,0,None,Negative inspected units,None,PASSED
+INSP-TEST-004,2026-06-03,,Industrial Transceiver,Line Beta,MCH-03,Shift 2,500,0,None,Missing product id,None,PASSED
+INSP-TEST-005,2026-06-04,PRD-C300,Edge AI Node,Line Gamma,MCH-05,Shift 3,400,12,Fake Unknown Failure Mode,Invalid unapproved defect category,ExtremeCatastrophic,FAILED
+INSP-TEST-001,2026-06-05,PRD-D400,Automotive Inverter,Line Delta,MCH-07,Shift 1,600,4,Material Crack,Duplicate inspection ID (same as row 1),High,FAILED
