@@ -1,0 +1,21 @@
+{
+  "name": "quality-lens",
+  "private": true,
+  "version": "1.0.0",
+  "description": "QualityLens – Engineering Quality Analytics & Root Cause Intelligence Platform",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build",
+    "dev": "npm --prefix frontend run dev",
+    "test": "npm --prefix frontend test",
+    "lint": "npm --prefix frontend run lint"
+  },
+  "keywords": [
+    "quality-engineering",
+    "analytics",
+    "pareto-analysis",
+    "root-cause-analysis",
+    "manufacturing"
+  ],
+  "author": "pnsssanand",
+  "license": "MIT"
+}

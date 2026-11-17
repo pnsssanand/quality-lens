@@ -1,4 +1,5 @@
 import io
+import uuid
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
@@ -19,17 +20,21 @@ def test_full_end_to_end_engineering_workflow():
     9. Quality threshold alert monitoring
     10. Official executive PDF and CSV report generation
     """
+    uid_suffix = uuid.uuid4().hex[:6]
+    id1 = f"INSP-E2E-{uid_suffix}-1"
+    id2 = f"INSP-E2E-{uid_suffix}-2"
+
     # Step 1: User authentication verification
     auth_res = client.post("/api/auth/verify")
     assert auth_res.status_code == 200
     user_info = auth_res.json()
     assert "uid" in user_info
 
-    # Step 2: Inspection CSV upload & validation
+    # Step 2: Inspection CSV upload & validation with unique IDs
     csv_payload = (
         "inspection_id,inspection_date,product_id,product_name,production_line,machine_id,shift,units_inspected,defective_units,defect_category,defect_description,severity,inspection_status\n"
-        "INSP-E2E-001,2026-06-15,PRD-A100,Precision Microcontroller Hub,Line Alpha,MCH-01,Shift 1,500,4,Surface Scratch,Minor front scuff,Low,PASSED\n"
-        "INSP-E2E-002,2026-06-15,PRD-B200,Industrial Signal Transceiver,Line Beta,MCH-04,Shift 2,450,12,Assembly Misalignment,1.2 degree pin skew,Medium,REWORK\n"
+        f"{id1},2026-06-15,PRD-A100,Precision Microcontroller Hub,Line Alpha,MCH-01,Shift 1,500,4,Surface Scratch,Minor front scuff,Low,PASSED\n"
+        f"{id2},2026-06-15,PRD-B200,Industrial Signal Transceiver,Line Beta,MCH-04,Shift 2,450,12,Assembly Misalignment,1.2 degree pin skew,Medium,REWORK\n"
     ).encode("utf-8")
 
     files = {"file": ("e2e_inspection_batch.csv", io.BytesIO(csv_payload), "text/csv")}
@@ -105,7 +110,7 @@ def test_full_end_to_end_engineering_workflow():
         "file_size": 348900,
         "content_type": "image/jpeg",
         "defect_category": "Assembly Misalignment",
-        "associated_inspection_id": "INSP-E2E-002",
+        "associated_inspection_id": id2,
         "associated_investigation_id": created_inv["investigation_reference"],
         "notes": "Microscopic evidence showing 1.2° pin deflection prior to rework."
     }

@@ -43,7 +43,12 @@ const SEVERITY_COLORS = {
 
 export const OverviewDashboard: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({});
-  const [filterOptions, setFilterOptions] = useState({
+  const [filterOptions, setFilterOptions] = useState<{
+    production_lines: string[];
+    machines: string[];
+    products: string[];
+    defect_categories: string[];
+  }>({
     production_lines: [],
     machines: [],
     products: [],

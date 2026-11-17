@@ -16,7 +16,12 @@ export const Reports: React.FC = () => {
   const [reportTitle, setReportTitle] = useState('Quality Engineering Analytics & CAPA Intelligence Report');
   const [exportFormat, setExportFormat] = useState<'pdf' | 'csv'>('pdf');
   const [generating, setGenerating] = useState(false);
-  const [filterOptions, setFilterOptions] = useState({
+  const [filterOptions, setFilterOptions] = useState<{
+    production_lines: string[];
+    machines: string[];
+    products: string[];
+    defect_categories: string[];
+  }>({
     production_lines: [],
     machines: [],
     products: [],
